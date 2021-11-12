@@ -22,39 +22,79 @@
 
         <div class="columns is-desktop">
           <div class="column">
-            <input class="input is-info" type="text" placeholder="Search" />
+            <input
+              class="input is-info"
+              type="text"
+              placeholder="Search"
+              required
+            />
           </div>
           <div class="column">
             <button class="button is-success users">Users</button>
-            <button class="button is-warning">Search</button>
+            <button class="button is-warning search">Search</button>
           </div>
         </div>
       </div>
-      <table class="table">
+      <table style="display: none" class="table">
         <thead>
-          <tr>
-            <th>Name</th>
-            <th>UserName</th>
-            <th>Email</th>
-            <th>Website</th>
-            <th>Phone</th>
-          </tr>
+          <th>Name</th>
+          <th>UserName</th>
+          <th>Email</th>
+          <th>Website</th>
+          <th>Phone</th>
+          <th>Picture</th>
         </thead>
         <tbody></tbody>
       </table>
+      <article style="display: none" class="message is-info">
+        <div class="message-body"></div>
+      </article>
     </section>
     <script>
+      $(".search").click(function () {
+        $(".table").css("display", "none");
+        $("article").css("display", "block");
+        if ($("input").val()) {
+          $.get(
+            `https://jsonplaceholder.typicode.com/posts/${$("input").val()}`,
+            function (response) {
+              $(`
+              <em>${response.id}</em> 
+              <strong>${response.title}</strong>
+            <br />
+            <p>${response.body}</p>
+            <br />
+            `).appendTo(".message-body");
+            }
+          );
+        } else {
+          console.log("entrada vacia");
+        }
+      });
       $(".users").click(() => {
+        $("article").css("display", "none");
+        $(".table").css("display", "block");
         $.get(
           "https://jsonplaceholder.typicode.com/users",
           function (response) {
             response.forEach((e) =>
               $(
-                `<tr><td>${e.name}</td>
-                 <td>${e.username}</td>
-                 <td>${e.email}</td>
-                 <td>${e.website}</td>
-                 <td>${e.phone}</td></tr>`
+                `
+                  <tr>
+                  <td>${e.name}</td>
+                  <td>${e.username}</td>
+                  <td><a>${e.email}</a></td>
+                  <td>${e.website}</td>
+                  <td>${e.phone}</td>
+                  <td><figure class="image is-24x24">
+                  <img class="is-rounded" src="https://randomuser.me/api/portraits/women/${Math.floor(
+                    Math.random() * 50
+                  )}.jpg">
+                 </figure><td>
+                </tr>
+                
+          
+                 `
               ).appendTo("tbody")
             );
           }
