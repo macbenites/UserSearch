@@ -14,9 +14,7 @@
   <body>
     <section class="section">
       <div class="content">
-        <h1 class="title">
-          Applying Jquery
-        </h1>
+        <h1 class="title">Applying Jquery</h1>
         <hr />
         <p class="subtitle">
           Here we will be applying <strong>Jquery/Ajax</strong>
@@ -47,11 +45,20 @@
     </section>
     <script>
       $(".users").click(() => {
-        $.get("https://jsonplaceholder.typicode.com/users", function (
-          response
-        ) {
-          console.log(response);
-        });
+        $.get(
+          "https://jsonplaceholder.typicode.com/users",
+          function (response) {
+            response.forEach((e) =>
+              $(
+                `<tr><td>${e.name}</td>
+                 <td>${e.username}</td>
+                 <td>${e.email}</td>
+                 <td>${e.website}</td>
+                 <td>${e.phone}</td></tr>`
+              ).appendTo("tbody")
+            );
+          }
+        );
       });
     </script>
   </body>
